@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Enums\UserRole;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -16,8 +17,19 @@ class UsersTable
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('email')->searchable(),
-                TextColumn::make('created_at')->dateTime()->sortable(),
-                // TextColumn::make('role'),
+                TextColumn::make('role')
+                ->badge()
+                ->formatStateUsing(fn (UserRole $state): string => match ($state) {
+                    UserRole::ADMIN => 'Administrador',
+                    UserRole::CUSTOMER => 'Cliente',
+                })
+                ->color(fn (UserRole $state): string => match ($state) {
+                    UserRole::ADMIN => 'danger',   // Rojo
+                    UserRole::CUSTOMER => 'info', // Azul
+                })
+                ->sortable()
+                ,
+                //TextColumn::make('created_at')->dateTime()->sortable(),
             ])
             ->filters([
                 //
