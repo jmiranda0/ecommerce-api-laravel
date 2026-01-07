@@ -22,7 +22,11 @@
     --color-zinc-800: #262626;
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
-
+    --color-primary: #14ebd9;
+    --color-background-light: #f6f8f8;
+    --color-background-dark: #112221;
+    --color-surface-dark: #193331;
+    --color-border-dark: #326762;
     --color-accent: var(--color-neutral-800);
     --color-accent-content: var(--color-neutral-800);
     --color-accent-foreground: var(--color-white);
