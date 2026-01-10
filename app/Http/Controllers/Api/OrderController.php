@@ -55,7 +55,11 @@ class OrderController extends Controller
                     'user_id' => $user->id, // <--- AHORA ASIGNAMOS EL ID DEL USUARIO REAL
                     'customer_name' => $validated['customer_name'],
                     'customer_email' => $validated['customer_email'],
-                    // ... resto de campos ...
+                    'customer_phone' => $validated['customer_phone'],
+                    'address' => $validated['address'],
+                    'city' => $validated['city'],
+                    'zip_code' => $validated['zip_code'],
+                    'total_amount' => $total,
                     'payment_method' => $validated['payment_method'], // Laravel lo castea solo al Enum
                     'status' => \App\Enums\OrderStatus::NEW, // Usamos el Enum directamente
                 ]);
