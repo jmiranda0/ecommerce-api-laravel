@@ -60,6 +60,8 @@ class ProductForm
                 Section::make('Imágenes')->schema([
                     FileUpload::make('images')
                         ->multiple() // ¡Permite subir muchas fotos!
+                        ->disk('public')
+                        ->visibility('public')
                         ->directory('products') // Las guarda en storage/app/public/products
                         ->reorderable()
                         ->required(),
