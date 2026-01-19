@@ -84,4 +84,17 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+    public function index(Request $request)
+    {
+        $orders = $request->user()
+            ->orders() // Relación definida en el modelo User
+            ->with('items.product') // Traemos los items y los datos del producto (Eager Loading)
+            ->latest() // Los más recientes primero
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $orders
+        ]);
+    }
 }

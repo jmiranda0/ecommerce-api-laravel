@@ -72,4 +72,7 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->role === UserRole::ADMIN;
     }
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
 }
