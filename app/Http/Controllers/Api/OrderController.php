@@ -6,6 +6,7 @@ use App\Enums\PaymentMethod;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -64,8 +65,15 @@ class OrderController extends Controller
                     'status' => \App\Enums\OrderStatus::NEW, // Usamos el Enum directamente
                 ]);
 
-                // ... (creación de items igual) ...
                 foreach ($validated['items'] as $item) {
+
+                    $product = Product::findOrFail($item['id']);
+
+                    if ($product->stock_quantity < $item['quantity']) {
+                        // Lanzamos una excepción que Laravel capturará, hará Rollback y devolverá error 500
+                        throw new \Exception("No hay suficiente stock para el producto: {$product->name}");
+                        }
+
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $item['id'],
@@ -73,6 +81,7 @@ class OrderController extends Controller
                         'unit_price' => $item['price'],
                         'total_price' => $item['price'] * $item['quantity'],
                     ]);
+                    $product->decrement('stock_quantity', $item['quantity']);
                 }
 
                 return $order;
