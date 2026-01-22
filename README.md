@@ -76,4 +76,4 @@ Incluye un panel de administración robusto para la gestión del inventario y pe
 
 ---
 *Desarrollado por Jahzeel Miranda Pérez*
-```
+
