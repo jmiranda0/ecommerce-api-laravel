@@ -38,9 +38,20 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::where('slug', $slug)
-            ->where('is_active', true)
-            ->firstOrFail();
+                            ->where('is_active', true)
+                            ->with('category')
+                            ->firstOrFail(); ;
 
-        return new ProductResource($product);
+        $related = Product::where('category_id', $product->category_id)
+                            ->where('id', '!=', $product->id)
+                            ->where('is_active', true)
+                            ->inRandomOrder()
+                            ->take(4)
+                            ->get();
+
+        return response()->json([
+            'data' => new ProductResource($product),
+            'related' => ProductResource::collection($related)
+        ]);
     }
 }
