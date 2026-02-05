@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('stock_quantity')->default(0);
             $table->json('images')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(true)->index();
             $table->boolean('is_featured')->default(false);
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

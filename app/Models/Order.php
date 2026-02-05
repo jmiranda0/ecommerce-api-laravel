@@ -9,7 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
+        'address',
+        'city',
+        'zip_code',
+        'total_amount',
+        'payment_method',
+        'payment_status',
+        'status',
+    ];
 
     protected $casts = [
         'status' => OrderStatus::class,

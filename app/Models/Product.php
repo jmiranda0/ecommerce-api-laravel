@@ -8,8 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    // Esto permite guardar datos masivamente
-    protected $guarded = [];
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'price',
+        'stock_quantity',
+        'images',
+        'is_active',
+        'is_featured',
+        'category_id',
+    ];
 
     // Esto convierte el JSON de la BD a un Array de PHP automáticamente
     protected $casts = [
