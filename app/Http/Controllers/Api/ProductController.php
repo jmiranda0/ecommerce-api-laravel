@@ -30,7 +30,7 @@ class ProductController extends Controller
         $query->when($request->sort === 'price_asc', fn($q) => $q->orderBy('price', 'asc'));
         $query->when($request->sort === 'price_desc', fn($q) => $q->orderBy('price', 'desc'));
 
-        $products = $query->get();
+        $products = $query->paginate(20);
 
         return ProductResource::collection($products);
     }
