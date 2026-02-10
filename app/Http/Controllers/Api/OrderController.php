@@ -6,6 +6,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Order\CreateOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -97,11 +98,10 @@ class OrderController extends Controller
             return $order;
         });
 
-        return response()->json([
-            'success' => true,
-            'order_id' => $order->id,
-            'total_amount' => $order->total_amount
-        ], 201);
+        // Cargar relaciones para el Resource
+        $order->load('items.product');
+        
+        return new OrderResource($order);
     }
 
     public function index(Request $request)
@@ -112,9 +112,6 @@ class OrderController extends Controller
             ->latest()
             ->paginate(15);
 
-        return response()->json([
-            'success' => true,
-            'data' => $orders
-        ]);
+        return OrderResource::collection($orders);
     }
 }
