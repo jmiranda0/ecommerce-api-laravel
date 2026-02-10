@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\PaymentMethod;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Order\CreateOrderRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -15,22 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
-    public function store(Request $request)
+    public function store(CreateOrderRequest $request)
     {
         // 1. Validar datos de entrada
-        $validated = $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'customer_email' => 'required|email|max:255',
-            'customer_phone' => 'required|string|max:20',
-            'address' => 'required|string|max:500',
-            'city' => 'required|string|max:100',
-            'zip_code' => 'required|string|max:10',
-            'payment_method' => ['required', 'string', Rule::in(PaymentMethod::getValues())],
-
-            'items' => 'required|array|min:1|max:50', // Límite de items
-            'items.*.id' => 'required|exists:products,id',
-            'items.*.quantity' => 'required|integer|min:1|max:100',
-        ]);
+        $validated = $request->validated();
 
         // 2. Verificar autenticación
         $user = $request->user();
@@ -121,7 +110,7 @@ class OrderController extends Controller
             ->orders()
             ->with('items.product')
             ->latest()
-            ->get();
+            ->paginate(15);
 
         return response()->json([
             'success' => true,
