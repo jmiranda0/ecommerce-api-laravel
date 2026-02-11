@@ -12,4 +12,13 @@ enum PaymentStatus: string
     {
         return array_column(self::cases(), 'value');
     }
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::PENDING => 'Pendiente',
+            self::PAID => 'Pagado',
+            self::FAILED => 'Fallido',
+        };
+    }
 }

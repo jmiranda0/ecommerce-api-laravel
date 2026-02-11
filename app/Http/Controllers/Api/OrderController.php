@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\PaymentStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
@@ -79,6 +80,7 @@ class OrderController extends Controller
                 'zip_code' => $validated['zip_code'],
                 'total_amount' => $total,
                 'payment_method' => $validated['payment_method'],
+                'payment_status' => PaymentStatus::PENDING,
                 'status' => OrderStatus::NEW,
             ]);
 
